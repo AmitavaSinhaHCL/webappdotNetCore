@@ -24,7 +24,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test with dotnet
-      run: dotnet test --logger "trx;LogFileName=unittests.trx" --results-directory "TestResults/"
+      run: dotnet test --logger "trx;LogFileName=unittests.trx" --results-directory "./TestResults"
     - name: Publish
       run: dotnet publish "./webappdotNetCore" -c Release -o webappdotNetCore
     - name: Upload Artifacts
