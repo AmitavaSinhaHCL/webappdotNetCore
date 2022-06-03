@@ -26,7 +26,7 @@ jobs:
     - name: Test with dotnet
       run: dotnet test --logger "trx;LogFileName=unittests.trx" --results-directory "TestResults/"
     - name: Publish
-      run: dotnet publish dotnet publish -c Release -o myApp
+      run: dotnet publish "./webappdotNetCore" -c Release -o myApp
     - name: Upload dotnet test results
       uses: actions/upload-artifact@v3
       with:
