@@ -36,7 +36,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: asartifact
-        path: "./TestResults"
+        path: "TestResults/"
         # Use always() to always run this step to publish test results when there are test failures
       if: ${{ always() }}
     - name: SonarCloud Scan
