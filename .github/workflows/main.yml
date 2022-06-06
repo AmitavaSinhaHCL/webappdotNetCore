@@ -55,6 +55,6 @@ jobs:
     - name: Show Response
       run: |
         echo ${{ steps.myRequest.outputs.response }}
-        echo ${{ fromJson(fromJson(steps.myRequest.outputs.response).projectStatus).status }}
+        echo ${{ fromJson(steps.myRequest.outputs.response).projectStatus }}
         
     
