@@ -9,9 +9,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    
     
     steps:
     - uses: actions/checkout@v3
@@ -24,7 +22,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test with dotnet
-      run: dotnet test --logger "trx;LogFileName=unittests.trx" --results-directory "TestResults/"
+      run: dotnet test --logger "trx;LogFileName=unittests.trx" --results-directory "TestResults" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=opencover.xml
     - name: Publish
       run: dotnet publish "./webappdotNetCore" -c Release -o webappdotNetCore
     - name: Upload Artifacts
@@ -36,7 +34,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: asartifact
-        path: "./TestResults"
+        path: "TestResults"
         # Use always() to always run this step to publish test results when there are test failures
       if: ${{ always() }}
     - name: SonarCloud Scan
@@ -44,4 +42,17 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    - name: Deploy Stage
+      id: myRequest
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://sonarcloud.io/api/qualitygates/project_status?projectKey=amitavasinha-github'
+        method: 'GET'
+        bearerToken: 'Basic 5583d75d233c958bdc3b90a2a0efe8b2c3cc8c48'
+        customHeaders: '{"Content-Type": "application/json"}'
+    - name: Show Response
+      run: |
+        echo ${{ steps.myRequest.outputs.response }}
+        echo ${{ fromJson(steps.myRequest.outputs.response).projectStatus }}
+        
     
